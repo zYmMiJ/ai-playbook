@@ -77,6 +77,15 @@ l'intégration à `develop`, avant même que le travail soit livré en prod.
 - **PR `release/*`/`hotfix/* → main`** : là, mot-clé de fermeture (`Closes #N`) — c'est la mise en
   prod réelle, l'issue doit se fermer à ce moment-là.
 
+**Limite constatée** (testé en conditions réelles) : un autre workflow natif, *Pull request linked
+to issue*, ne se déclenche que sur un vrai lien (`ConnectedEvent`) — que seul un mot-clé de
+fermeture crée. Une simple mention `Refs #N` ne crée qu'une référence croisée
+(`CrossReferencedEvent`), insuffisante pour ce workflow. Avec `develop` en branche par défaut, il
+n'existe donc pas de combinaison texte qui déclenche à la fois ce workflow **et** évite la
+fermeture prématurée décrite ci-dessus : le passage à *En revue* (ou équivalent "en cours de
+revue") au moment d'une PR `feature/* → develop` reste un déplacement manuel de la carte, pas
+automatisable nativement dans ce contexte précis.
+
 ## Erreurs fréquentes à surveiller
 
 - `release/*` créée depuis `main` au lieu de `develop` (embarque moins que prévu, ou un historique
