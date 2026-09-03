@@ -62,14 +62,21 @@ démarrage de la session).
 - `Stop` : résumé automatique des fichiers modifiés dans le tour, pour relecture rapide avant de
   committer soi-même.
 
-## Exemple en place sur ce repo
+## Exemples en place sur ce repo
 
-`.claude/settings.json` + `.claude/hooks/block-banwords.py` : `PreToolUse` sur `Write|Edit` qui
-bloque (exit code 2, message à Claude via stderr) toute écriture contenant un ban word listé dans
-`.claude/hooks/banwords.local.txt` — applique techniquement la règle "Écrire dans ce repo" du
-`README.md`, même sur demande explicite pour un tour donné. Illustre le cas "contrôle qui doit
-*toujours* passer" : un rappel dans `CLAUDE.md`/le README seul reste indicatif, un hook ne l'est
-pas.
+`.claude/settings.json` déclare deux hooks :
+
+- **`PreToolUse` sur `Write|Edit`** → `.claude/hooks/block-banwords.py` : bloque (exit code 2,
+  message à Claude via stderr) toute écriture contenant un ban word listé dans
+  `.claude/hooks/banwords.local.txt` — applique techniquement la règle "Écrire dans ce repo" du
+  `README.md`, même sur demande explicite pour un tour donné. Illustre le cas "contrôle qui doit
+  *toujours* passer" : un rappel dans `CLAUDE.md`/le README seul reste indicatif, un hook ne l'est
+  pas.
+- **`Stop`** → `.claude/hooks/check-inventory.py` : compare `git status --porcelain -uall` au
+  contenu du README.md en fin de tour — un `skills/*/SKILL.md`, `agents/*.md`, `rules/*.md` ou
+  `prompts/*.md` ajouté et absent du tableau "Inventaire" (ou supprimé mais encore référencé)
+  bloque la fin du tour, avec garde-fou anti-boucle (`stop_hook_active`). Illustre l'idée
+  "`Stop` : vérification de fin de tâche" ci-dessus.
 
 La liste de ban words elle-même n'est **jamais commitée** (`.gitignore`) : elle peut contenir de
 vrais noms de client/projet, ce qui la rendrait aussi problématique que le contenu qu'elle sert à
