@@ -1,0 +1,35 @@
+# Synchronise le kanban (https://github.com/users/zYmMiJ/projects/4) avec le cycle de vie
+# Git Flow des issues/PR de ce repo. Mapping et convention de branche : voir
+# .github/scripts/sync-kanban.js, rules/git-flow.md, skills/git-flow/actions/feature.md.
+#
+# Nécessite le secret PROJECT_TOKEN (PAT classic, scopes repo+project) : les Projects v2 d'un
+# compte utilisateur ne sont pas accessibles au GITHUB_TOKEN automatique d'une Action.
+name: Sync kanban (Git Flow)
+
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ajouter la nouvelle issue au projet
+        if: github.event_name == 'issues'
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: https://github.com/users/zYmMiJ/projects/4
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/scripts
+          sparse-checkout-cone-mode: false
+
+      - name: Positionner le statut kanban
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+          script-path: .github/scripts/sync-kanban.js
