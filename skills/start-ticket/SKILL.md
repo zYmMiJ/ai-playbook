@@ -20,6 +20,13 @@ raison de blocage explicite si le ticket est en attente d'un tiers (ex. `en atte
 > GitHub Issues...), et les "rappels transverses" en bas de fichier sont spécifiques à chaque repo.
 > Ne pas copier ce fichier tel quel sans l'adapter — voir la section correspondante en bas.
 
+**Phases et `/clear`** — les étapes ci-dessous se regroupent en 3 phases pour la gestion du
+contexte (voir [`../../rules/context-efficiency.md`](../../rules/context-efficiency.md)) :
+**Analyse** (1-4, jusqu'à la validation du plan), **Implémentation** (5-6), **Review** (7-8). Ce
+qui doit survivre d'une phase à l'autre passe par `tickets/<ID>/analyse.md` et `plan.md`, pas par
+l'historique de conversation — faire un `/clear` entre phases sur un ticket volumineux plutôt que
+de laisser tout s'accumuler dans une seule session.
+
 ## 1. Identifier le ticket
 
 Extraire l'ID du texte/URL collé (adapter le pattern au tracker utilisé, ex. `[A-Z]{2,}-\d+` pour
@@ -40,11 +47,15 @@ bloquer sur le mode manuel (demander à l'utilisateur de coller le contenu).
 ## 2. Analyse
 
 Explorer le code concerné (fichiers/composants/classes, endpoints ou tables existants pertinents).
+**Exploration minimale** : s'arrêter dès qu'il y a assez d'éléments pour écrire le plan — ne pas
+lire tout un module/repo "pour être complet" quand le ticket ne touche qu'un fichier/une fonction.
 Écrire `tickets/<ID>/analyse.md` : contexte, exploration, constats. **Ne pas écrire de code.**
 
 ## 3. Plan
 
-Écrire `tickets/<ID>/plan.md` :
+Écrire `tickets/<ID>/plan.md` en suivant le
+[gabarit](assets/plan-template.md) (contenu standardisé, pour retrouver la même structure d'un
+ticket à l'autre) :
 - **Statut** en première ligne (voir ci-dessus).
 - **Changements fichier par fichier** — ce qui va changer, par fichier concerné.
 - **Cas limites** identifiés.
@@ -72,7 +83,9 @@ ne pas toucher à la doc** tant que ce n'est pas confirmé.
 
 ## 7. Après validation de l'implémentation
 
-a. Écrire/compléter les tests, les lancer.
+a. Écrire/compléter les tests. **Tests ciblés avant tests complets** : lancer d'abord ceux qui
+   couvrent les fichiers modifiés, réserver la suite complète à la validation finale de cette
+   étape.
 b. Appliquer les mises à jour de doc **validées** à l'étape 3 — cette fois les écrire réellement.
 c. Proposer un message de commit référençant l'ID du ticket (voir le skill
    [`writing-good-commits`](../writing-good-commits/SKILL.md)) — ne pas committer soi-même sauf
