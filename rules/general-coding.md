@@ -11,6 +11,14 @@ projet. Ce qui est spécifique à un framework va dans le repo du projet, pas ic
 - Un commentaire explique le **pourquoi** (contrainte, décision, piège évité), pas le **quoi** —
   le code dit déjà le quoi.
 
+## CSS
+
+- Le choix d'une unité CSS (`rem`, `px`, `%`, `fr`, `vh`/`vw`, `em`, variable CSS) n'est pas une
+  question de style : chaque unité répond à "relatif à quoi ?" (zoom texte, parent, viewport…).
+  Détail et cas d'usage : [`css-units.md`](css-units.md).
+- Ne convertir que les valeurs touchées par la tâche en cours, pas tout le fichier/composant au
+  passage — même logique que "ne pas élargir le scope d'une demande" ci-dessous.
+
 ## Changements
 
 - Ne pas élargir le scope d'une demande sans le dire. Une correction ponctuelle reste ponctuelle
