@@ -53,10 +53,7 @@ permanentes `main`/`develop`, branches temporaires `feature/*`/`release/*`/`hotf
 [`git-flow`](skills/git-flow/SKILL.md), vérification avant fusion via l'agent
 [`git-flow-reviewer`](agents/git-flow-reviewer.md)). `develop` est la branche de travail par
 défaut pour toute contribution à ce repo — brancher `feature/*` depuis `develop`, jamais depuis
-`main` directement. **Le défaut GitHub du repo est encore `main`** (pas encore basculé sur
-`develop`, changement volontairement laissé de côté pour l'instant — outward-facing, à décider
-séparément) : vérifier explicitement la branche de base avant d'ouvrir une PR plutôt que de
-supposer que le défaut de l'outil correspond au modèle.
+`main` directement. Le défaut GitHub du repo est aligné sur `develop`.
 
 ## Workflow actuel : traiter un ticket de bout en bout
 
