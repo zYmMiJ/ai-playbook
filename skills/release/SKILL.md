@@ -16,6 +16,11 @@ description: >
 > est donné en bas de fichier — à ne pas copier tel quel, juste pour illustrer le niveau de détail
 > attendu une fois adapté.
 
+> Si le projet suit le modèle [Git Flow](../../rules/git-flow.md) (branches `main`/`develop`,
+> `release/*`/`hotfix/*`), ce skill correspond à l'étape "tag + push" des actions
+> [`git-flow`](../git-flow/SKILL.md) `release`/`hotfix` — son étape 0 "déterminer le tag" ci-dessous
+> ne s'applique alors pas, la version étant déjà fixée avant le tag.
+
 ## Principe général
 
 Deux logiques de déploiement distinctes, à ne pas confondre :

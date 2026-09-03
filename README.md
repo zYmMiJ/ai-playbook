@@ -46,6 +46,18 @@ repo. Sans ce fichier (ex. clone frais), le hook ne bloque rien — juste une no
 Nécessite d'avoir ouvert `/hooks` une fois (ou redémarré la session) après la création de
 `.claude/settings.json` pour que Claude Code recharge la config.
 
+## Comment ce repo lui-même est versionné
+
+Adopte son propre modèle documenté en interne : [Git Flow](rules/git-flow.md) — branches
+permanentes `main`/`develop`, branches temporaires `feature/*`/`release/*`/`hotfix/*` (skill
+[`git-flow`](skills/git-flow/SKILL.md), vérification avant fusion via l'agent
+[`git-flow-reviewer`](agents/git-flow-reviewer.md)). `develop` est la branche de travail par
+défaut pour toute contribution à ce repo — brancher `feature/*` depuis `develop`, jamais depuis
+`main` directement. **Le défaut GitHub du repo est encore `main`** (pas encore basculé sur
+`develop`, changement volontairement laissé de côté pour l'instant — outward-facing, à décider
+séparément) : vérifier explicitement la branche de base avant d'ouvrir une PR plutôt que de
+supposer que le défaut de l'outil correspond au modèle.
+
 ## Workflow actuel : traiter un ticket de bout en bout
 
 1. **Étude d'architecture en amont, conseillée avant d'ouvrir le ticket** — pour un sujet non
@@ -100,11 +112,13 @@ sur ce flux réel — statut "à valider sur un vrai ticket", pas encore "adopt�
 | [`user-stories`](skills/user-stories/SKILL.md) | Produit/affine des User Stories scrum (cadrer → découper → rédiger → évaluer → estimer → ordonner → finaliser), gabarit As/I want/So that + critères d'acceptation, statuts `proposed`/`ready`/`in-progress`/`done`/`cancelled`. | adapté de [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework) (`plugins/aidd-pm/skills/02-user-stories`) |
 | [`release`](skills/release/SKILL.md) | Donne les commandes pour sortir une release via tag Git (calcul du tag, garde-fous) — ne les exécute jamais soi-même. | généralisé à partir d'un projet Spring Boot réel |
 | [`generate-release-note`](skills/generate-release-note/SKILL.md) | Génère les notes de release entre deux tags, groupées par type conventionnel, dans un fichier local — après validation de la release, jamais avant. Complète `release`. | généralisé à partir d'un projet Spring Boot réel |
+| [`git-flow`](skills/git-flow/SKILL.md) | Commandes pour créer/terminer une branche feature/release/hotfix selon Git Flow (branches `main`/`develop`) — s'articule avec `release`/`generate-release-note` pour le tag et les notes. | custom |
 
 | Agents | Ce que ça fait | Source |
 |---|---|---|
 | [`security-reviewer`](agents/security-reviewer.md) | Gabarit de revue de sécurité *spécifique au projet* (fichiers/classes/conventions réels) — complète un skill/agent générique de sécurité, ne le remplace pas. | custom |
 | [`api-contract-reviewer`](agents/api-contract-reviewer.md) | Gabarit de revue comparant un type front à son DTO/controller backend, pour détecter un contrat API qui a dérivé (champ renommé/ajouté/supprimé, nullabilité). N'a de sens que sans client API généré. | custom — un seul projet source |
+| [`git-flow-reviewer`](agents/git-flow-reviewer.md) | Générique (pas un gabarit à remplir) : vérifie qu'une branche/PR respecte Git Flow (base, cible de fusion, double fusion main+develop) avant de la merger. | custom |
 
 | Rules | Ce que ça fait | Source |
 |---|---|---|
@@ -113,6 +127,7 @@ sur ce flux réel — statut "à valider sur un vrai ticket", pas encore "adopt�
 | [`docs-structure.md`](rules/docs-structure.md) | Convention `docs/` (architecture/decisions/modules) et qui la remplit, éprouvée sur deux projets réels. | custom |
 | [`hooks.md`](rules/hooks.md) | Ce qu'un hook `settings.json` apporte par rapport à un `CLAUDE.md`, avec un gabarit de contrôle rapide après édition. | custom — `.claude/hooks/README.md` |
 | [`mcp.md`](rules/mcp.md) | Ce que MCP apporterait, avec un gabarit de branchement — documenté, pas activé par défaut. | custom — `.claude/mcp/README.md` |
+| [`git-flow.md`](rules/git-flow.md) | Modèle de branches main/develop/feature/release/hotfix, quand l'adopter, règles de fusion, erreurs fréquentes. | custom |
 
 | Prompts | Ce que ça fait | Source |
 |---|---|---|

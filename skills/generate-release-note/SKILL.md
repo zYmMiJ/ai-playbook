@@ -16,7 +16,9 @@ description: >
 
 Complète le skill [`release`](../release/SKILL.md) : à lancer seulement une fois qu'une release
 taguée a été **validée en environnement** par l'utilisateur (pas juste taguée/pushée) — pas avant,
-pas automatiquement à la suite d'un tag.
+pas automatiquement à la suite d'un tag. S'applique pareil pour un tag issu d'un `hotfix/*` en
+[Git Flow](../../rules/git-flow.md) — un correctif urgent mérite une entrée au même titre qu'une
+release normale.
 
 ## Portée par défaut : fichier local, rien de publié
 
