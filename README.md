@@ -37,6 +37,15 @@ générique (`<ID>`, "un ticket donné", un cas anonymisé) plutôt qu'un identi
 doit rester compréhensible et utile sans connaître le projet d'origine — sinon ça n'a plus rien à
 faire ici, ça reste dans le repo du projet concerné.
 
+**Appliqué techniquement, pas seulement suivi "en général"** : un hook `PreToolUse` (voir
+[`rules/hooks.md`](rules/hooks.md)) bloque toute écriture (`Write`/`Edit`) contenant un ban word
+listé dans `.claude/hooks/banwords.local.txt`, même sur demande explicite pour ce tour — liste
+**locale au poste, jamais commitée** (elle peut contenir de vrais noms de client/projet, `.gitignore`),
+à créer/compléter soi-même à chaque fois qu'un tel terme se glisse dans du contenu généralisé pour ce
+repo. Sans ce fichier (ex. clone frais), le hook ne bloque rien — juste une note en sortie.
+Nécessite d'avoir ouvert `/hooks` une fois (ou redémarré la session) après la création de
+`.claude/settings.json` pour que Claude Code recharge la config.
+
 ## Workflow actuel : traiter un ticket de bout en bout
 
 1. **Étude d'architecture en amont, conseillée avant d'ouvrir le ticket** — pour un sujet non
@@ -89,6 +98,8 @@ sur ce flux réel — statut "à valider sur un vrai ticket", pas encore "adopt�
 | [`writing-good-commits`](skills/writing-good-commits/SKILL.md) | Rédige un message de commit à partir du diff stagé, aligné sur la convention déjà en usage dans le repo. | custom |
 | [`writing-good-pull-requests`](skills/writing-good-pull-requests/SKILL.md) | Rédige et ouvre une PR/MR en brouillon depuis la branche courante (titre/corps depuis le diff, jamais de commit/push/merge). Complète `writing-good-commits`. | adapté de [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework) (`plugins/aidd-vcs/skills/02-pull-request`) |
 | [`user-stories`](skills/user-stories/SKILL.md) | Produit/affine des User Stories scrum (cadrer → découper → rédiger → évaluer → estimer → ordonner → finaliser), gabarit As/I want/So that + critères d'acceptation, statuts `proposed`/`ready`/`in-progress`/`done`/`cancelled`. | adapté de [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework) (`plugins/aidd-pm/skills/02-user-stories`) |
+| [`release`](skills/release/SKILL.md) | Donne les commandes pour sortir une release via tag Git (calcul du tag, garde-fous) — ne les exécute jamais soi-même. | généralisé à partir d'un projet Spring Boot réel |
+| [`generate-release-note`](skills/generate-release-note/SKILL.md) | Génère les notes de release entre deux tags, groupées par type conventionnel, dans un fichier local — après validation de la release, jamais avant. Complète `release`. | généralisé à partir d'un projet Spring Boot réel |
 
 | Agents | Ce que ça fait | Source |
 |---|---|---|
@@ -98,6 +109,7 @@ sur ce flux réel — statut "à valider sur un vrai ticket", pas encore "adopt�
 | Rules | Ce que ça fait | Source |
 |---|---|---|
 | [`general-coding.md`](rules/general-coding.md) | Style, gestion du scope, revue — principes indépendants d'une stack. | custom |
+| [`css-units.md`](rules/css-units.md) | Unités CSS/SCSS (`rem`/`px`/`%`/`fr`/`vh`-`vw`/`em`/variables) : à quoi chacune est relative et quand l'utiliser. | custom |
 | [`docs-structure.md`](rules/docs-structure.md) | Convention `docs/` (architecture/decisions/modules) et qui la remplit, éprouvée sur deux projets réels. | custom |
 | [`hooks.md`](rules/hooks.md) | Ce qu'un hook `settings.json` apporte par rapport à un `CLAUDE.md`, avec un gabarit de contrôle rapide après édition. | custom — `.claude/hooks/README.md` |
 | [`mcp.md`](rules/mcp.md) | Ce que MCP apporterait, avec un gabarit de branchement — documenté, pas activé par défaut. | custom — `.claude/mcp/README.md` |

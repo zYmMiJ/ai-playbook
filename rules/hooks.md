@@ -61,3 +61,17 @@ démarrage de la session).
   rappel/alerte quand ce type de fichier est touché.
 - `Stop` : résumé automatique des fichiers modifiés dans le tour, pour relecture rapide avant de
   committer soi-même.
+
+## Exemple en place sur ce repo
+
+`.claude/settings.json` + `.claude/hooks/block-banwords.py` : `PreToolUse` sur `Write|Edit` qui
+bloque (exit code 2, message à Claude via stderr) toute écriture contenant un ban word listé dans
+`.claude/hooks/banwords.local.txt` — applique techniquement la règle "Écrire dans ce repo" du
+`README.md`, même sur demande explicite pour un tour donné. Illustre le cas "contrôle qui doit
+*toujours* passer" : un rappel dans `CLAUDE.md`/le README seul reste indicatif, un hook ne l'est
+pas.
+
+La liste de ban words elle-même n'est **jamais commitée** (`.gitignore`) : elle peut contenir de
+vrais noms de client/projet, ce qui la rendrait aussi problématique que le contenu qu'elle sert à
+bloquer si elle finissait versionnée. Elle est propre à chaque poste, à recréer/compléter
+manuellement (voir le gabarit de catégories en tête du fichier une fois créé).

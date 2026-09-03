@@ -2,3 +2,7 @@
 *.log
 .idea/
 .vscode/
+
+# Ban words locaux (peut contenir de vrais noms de client/projet) — jamais commité, voir
+# .claude/hooks/block-banwords.py et rules/hooks.md.
+.claude/hooks/banwords.local.txt
