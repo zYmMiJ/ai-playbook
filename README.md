@@ -125,6 +125,7 @@ sur ce flux réel — statut "à valider sur un vrai ticket", pas encore "adopt�
 | [`hooks.md`](rules/hooks.md) | Ce qu'un hook `settings.json` apporte par rapport à un `CLAUDE.md`, avec un gabarit de contrôle rapide après édition. | custom — `.claude/hooks/README.md` |
 | [`mcp.md`](rules/mcp.md) | Ce que MCP apporterait, avec un gabarit de branchement — documenté, pas activé par défaut. | custom — `.claude/mcp/README.md` |
 | [`git-flow.md`](rules/git-flow.md) | Modèle de branches main/develop/feature/release/hotfix, quand l'adopter, règles de fusion, erreurs fréquentes. | custom |
+| [`context-efficiency.md`](rules/context-efficiency.md) | Limiter la consommation de tokens d'une session : lecture ciblée, sous-agents à bon escient, sortie concise. | custom |
 
 | Prompts | Ce que ça fait | Source |
 |---|---|---|
