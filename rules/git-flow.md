@@ -61,6 +61,22 @@ Une nuance entre les deux contextes où ce skill s'applique :
 Les notes de release (skill [`generate-release-note`](../skills/generate-release-note/SKILL.md))
 s'appliquent normalement une fois le tag pushé et la release validée, sans changement.
 
+## Lien avec un tracker GitHub Issues (kanban, mots-clés de fermeture)
+
+Si les tickets suivis sont des issues GitHub (ex. via un projet Projects v2), les workflows natifs
+de ce projet (icône ⚙️ *Workflows*, dans l'UI — pas configurable par API) peuvent déplacer une
+carte automatiquement sur *Item added to project* et *Item closed*, sans script ni Action. Un piège
+propre à Git Flow avec ce mécanisme : GitHub n'auto-ferme une issue via un mot-clé (`Closes #N`,
+`Fixes #N`...) dans une PR **que si cette PR est mergée dans la branche par défaut du repo**. Si
+`develop` est la branche par défaut (voir ci-dessus), un mot-clé de fermeture dans une PR
+`feature/* → develop` fermerait l'issue — et donc ferait passer sa carte à *Terminé* — dès
+l'intégration à `develop`, avant même que le travail soit livré en prod.
+
+- **PR `feature/* → develop`** : référencer l'issue sans mot-clé de fermeture (`Refs #N`,
+  `Part of #N`) — elle reste ouverte, la carte reste sur sa colonne intermédiaire.
+- **PR `release/*`/`hotfix/* → main`** : là, mot-clé de fermeture (`Closes #N`) — c'est la mise en
+  prod réelle, l'issue doit se fermer à ce moment-là.
+
 ## Erreurs fréquentes à surveiller
 
 - `release/*` créée depuis `main` au lieu de `develop` (embarque moins que prévu, ou un historique
