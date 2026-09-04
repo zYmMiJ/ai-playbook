@@ -9,7 +9,7 @@ organized and versioned. Codex is not a second general-purpose development assis
 
 ## Codex responsibilities
 
-- Release notes generation (`automation/release-notes/`).
+- Release notes generation (`meta/automation/release-notes/`).
 - Nothing else yet — extend this list only when a new automation workflow is added under
   `.github/workflows/`, with its own prompt file.
 
