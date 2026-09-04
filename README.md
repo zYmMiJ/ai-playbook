@@ -49,21 +49,25 @@ règles d'écriture).
 
 ### OpenAI Codex
 
-Moteur d'automatisation, utilisé **uniquement** depuis GitHub Actions — jamais en session
-interactive. Ne remplace pas Claude Code et ne doit pas devenir un second assistant de
+Moteur d'automatisation, réservé à un usage **uniquement** depuis GitHub Actions — jamais en
+session interactive. Ne remplace pas Claude Code et ne doit pas devenir un second assistant de
 développement général sur ce repo (voir [`AGENTS.md`](AGENTS.md), qui détaille ses
 responsabilités actuelles).
 
-Utilisé aujourd'hui pour la génération de brouillons de release notes
-([`meta/automation/release-notes/`](meta/automation/release-notes/), workflow
-[`codex-release-notes.yml`](.github/workflows/codex-release-notes.yml)) — voir
-[issue #15](https://github.com/zYmMiJ/ai-playbook/issues/15) /
-[`meta/tickets/15/`](meta/tickets/15/) pour l'US qui a introduit cette intégration. Codex tourne en
-lecture seule (`permission-profile: ':read-only'`), ne peut ni pousser ni merger, et n'écrit jamais
-directement dans le repo.
+Aucun workflow actif ne l'utilise aujourd'hui : la génération des release notes en CI, son seul cas
+d'usage jusqu'ici ([issue #15](https://github.com/zYmMiJ/ai-playbook/issues/15) /
+[`meta/tickets/15/`](meta/tickets/15/)), est passée à un script déterministe — voir
+[issue #20](https://github.com/zYmMiJ/ai-playbook/issues/20) / [`meta/tickets/20/`](meta/tickets/20/),
+la tâche n'a jamais eu besoin d'un modèle. La plomberie (clé API, secret GitHub) reste configurée
+pour une future automatisation qui en aurait réellement besoin ; setup et bonnes pratiques de
+sécurité : [`meta/automation/README.md`](meta/automation/README.md).
 
-Setup complet (clé API OpenAI, secret GitHub, déclenchement du workflow, coûts) :
-[`meta/automation/release-notes/README.md`](meta/automation/release-notes/README.md).
+### Release notes en CI
+
+Génère un brouillon de release notes entre deux refs Git
+([`meta/automation/release-notes/`](meta/automation/release-notes/), workflow
+[`release-notes.yml`](.github/workflows/release-notes.yml), `workflow_dispatch` uniquement) — par
+un script (`generate.sh`), pas par Codex : voir [issue #20](https://github.com/zYmMiJ/ai-playbook/issues/20).
 
 ## Inventaire
 
@@ -101,7 +105,7 @@ Setup complet (clé API OpenAI, secret GitHub, déclenchement du workflow, coût
 
 | Automation | Ce que ça fait | IA | Source |
 |---|---|---|---|
-| [`release-notes`](meta/automation/release-notes/prompt.md) | Génère un brouillon de release notes en CI à partir de l'historique Git entre deux refs (workflow [`codex-release-notes.yml`](.github/workflows/codex-release-notes.yml), `workflow_dispatch` uniquement, lecture seule). | Codex | custom — [issue #15](https://github.com/zYmMiJ/ai-playbook/issues/15) |
+| [`release-notes`](meta/automation/release-notes/generate.sh) | Génère un brouillon de release notes en CI à partir de l'historique Git entre deux refs, par un script déterministe — pas d'appel API (workflow [`release-notes.yml`](.github/workflows/release-notes.yml), `workflow_dispatch` uniquement). | Script (ex-Codex) | custom — [issue #15](https://github.com/zYmMiJ/ai-playbook/issues/15) → [issue #20](https://github.com/zYmMiJ/ai-playbook/issues/20) |
 
 ## Origine
 
