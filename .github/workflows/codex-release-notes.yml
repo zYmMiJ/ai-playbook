@@ -1,0 +1,108 @@
+name: Codex release notes
+
+# MVP volontairement manuel : pas de déclenchement automatique.
+# Pourra être étendu plus tard, par ex. :
+#   on:
+#     push:
+#       tags:
+#         - 'v*'
+on:
+  workflow_dispatch:
+    inputs:
+      from_ref:
+        description: >-
+          Ref/tag de départ (exclu). Laisser vide pour utiliser automatiquement le dernier tag
+          avant to_ref.
+        required: false
+        default: ''
+      to_ref:
+        description: 'Ref/tag de fin (inclus).'
+        required: false
+        default: 'HEAD'
+
+permissions:
+  contents: read
+
+jobs:
+  release-notes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (historique complet + tags)
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Déterminer la plage de commits
+        id: range
+        run: |
+          set -euo pipefail
+
+          to_ref="${{ inputs.to_ref }}"
+          from_ref="${{ inputs.from_ref }}"
+          if [ -z "$to_ref" ]; then
+            to_ref="HEAD"
+          fi
+
+          if ! git rev-parse --verify "${to_ref}^{commit}" >/dev/null 2>&1; then
+            echo "::error::to_ref invalide ou introuvable : $to_ref"
+            exit 1
+          fi
+
+          if [ -z "$from_ref" ]; then
+            from_ref="$(git describe --tags --abbrev=0 "${to_ref}^" 2>/dev/null || true)"
+            if [ -z "$from_ref" ]; then
+              echo "::error::from_ref non fourni et aucun tag précédent trouvé automatiquement avant $to_ref — renseigner from_ref manuellement."
+              exit 1
+            fi
+          elif ! git rev-parse --verify "${from_ref}^{commit}" >/dev/null 2>&1; then
+            echo "::error::from_ref invalide ou introuvable : $from_ref"
+            exit 1
+          fi
+
+          echo "from_ref=$from_ref" >> "$GITHUB_OUTPUT"
+          echo "to_ref=$to_ref" >> "$GITHUB_OUTPUT"
+
+      - name: Construire le contexte Git
+        id: context
+        run: |
+          set -euo pipefail
+
+          context_file="$RUNNER_TEMP/git-context.md"
+          {
+            echo "## Commit range"
+            echo "- from_ref: ${{ steps.range.outputs.from_ref }}"
+            echo "- to_ref: ${{ steps.range.outputs.to_ref }}"
+            echo "- generated_at: $(date -u +%Y-%m-%d)"
+            echo
+            echo "## Commit log (${{ steps.range.outputs.from_ref }}..${{ steps.range.outputs.to_ref }}, no merges)"
+            echo '```'
+            git log "${{ steps.range.outputs.from_ref }}..${{ steps.range.outputs.to_ref }}" \
+              --no-merges --date=short --pretty=format:'%h %s (%an, %ad)'
+            echo
+            echo '```'
+          } > "$context_file"
+
+          echo "context_file=$context_file" >> "$GITHUB_OUTPUT"
+
+      - name: Assembler le prompt (règles statiques + contexte Git)
+        id: prompt
+        run: |
+          set -euo pipefail
+          cat meta/automation/release-notes/prompt.md "${{ steps.context.outputs.context_file }}" \
+            > .codex-prompt.md
+          echo "prompt_file=.codex-prompt.md" >> "$GITHUB_OUTPUT"
+
+      - name: Générer les release notes via Codex
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          permission-profile: ':read-only'
+          prompt-file: ${{ steps.prompt.outputs.prompt_file }}
+          output-file: release-notes.md
+
+      - name: Publier l'artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes-${{ steps.range.outputs.from_ref }}-${{ steps.range.outputs.to_ref }}
+          path: release-notes.md
+          if-no-files-found: error
