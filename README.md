@@ -54,20 +54,9 @@ session interactive. Ne remplace pas Claude Code et ne doit pas devenir un secon
 développement général sur ce repo (voir [`AGENTS.md`](AGENTS.md), qui détaille ses
 responsabilités actuelles).
 
-Aucun workflow actif ne l'utilise aujourd'hui : la génération des release notes en CI, son seul cas
-d'usage jusqu'ici ([issue #15](https://github.com/zYmMiJ/ai-playbook/issues/15) /
-[`meta/tickets/15/`](meta/tickets/15/)), est passée à un script déterministe — voir
-[issue #20](https://github.com/zYmMiJ/ai-playbook/issues/20) / [`meta/tickets/20/`](meta/tickets/20/),
-la tâche n'a jamais eu besoin d'un modèle. La plomberie (clé API, secret GitHub) reste configurée
-pour une future automatisation qui en aurait réellement besoin ; setup et bonnes pratiques de
-sécurité : [`meta/automation/README.md`](meta/automation/README.md).
-
-### Release notes en CI
-
-Génère un brouillon de release notes entre deux refs Git
-([`meta/automation/release-notes/`](meta/automation/release-notes/), workflow
-[`release-notes.yml`](.github/workflows/release-notes.yml), `workflow_dispatch` uniquement) — par
-un script (`generate.sh`), pas par Codex : voir [issue #20](https://github.com/zYmMiJ/ai-playbook/issues/20).
+Aucun workflow actif ne l'utilise aujourd'hui — plomberie (clé API, secret GitHub) prête pour une
+future automatisation, setup et bonnes pratiques de sécurité dans
+[`meta/automation/README.md`](meta/automation/README.md).
 
 ## Inventaire
 
