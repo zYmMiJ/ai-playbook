@@ -1,4 +1,4 @@
-Statut : en implémentation
+Statut : implémenté
 
 ## Objectif de l'US
 
@@ -97,9 +97,10 @@ Voir "Changements fichier par fichier" ci-dessus.
 5. Mettre à jour `AGENTS.md` et `README.md` racine — fait.
 6. Tester le script en local sur ce repo (plage `0.1.0..0.2.0`, plage vide, commit non
    conventionnel) — **fait, voir résultat donné à l'utilisateur avec l'implémentation**.
-7. Tester le workflow sur GitHub Actions — **non fait**, à déclencher par l'utilisateur
-   (`Actions` → `release-notes` → `Run workflow`), aucun secret requis contrairement à #15 donc pas
-   de prérequis manuel avant de tester, seulement le déclenchement lui-même.
+7. Tester le workflow sur GitHub Actions — **fait** : PR #21 mergée sur `develop`, workflow
+   déclenché (`from_ref=0.1.0`, `to_ref=HEAD`) — run
+   [33864629161](https://github.com/zYmMiJ/ai-playbook/actions/runs/33864629161), succès en 7s,
+   sortie catégorisée correctement, aucun secret consommé.
 
 ## Definition of Done
 
@@ -108,5 +109,5 @@ Voir "Changements fichier par fichier" ci-dessus.
 - [x] Plus aucune référence à Codex dans le chemin de génération des release notes (script, workflow,
       doc du dossier `release-notes/`).
 - [x] `AGENTS.md`/`README.md` cohérents avec l'état réel (Codex configuré mais sans workflow actif).
-- [ ] Le workflow renommé a été exécuté au moins une fois avec succès sur GitHub — **à faire par
-      l'utilisateur**, aucun secret requis pour ce test contrairement à #15.
+- [x] Le workflow renommé a été exécuté au moins une fois avec succès sur GitHub — run
+      [33864629161](https://github.com/zYmMiJ/ai-playbook/actions/runs/33864629161), voir étape 7.
