@@ -4,6 +4,9 @@ Mes pratiques de dev avec l'IA (Claude Code), indépendantes d'un projet précis
 dans n'importe quel repo. Prenez ce qui vous sert, ignorez le reste, adaptez sans demander la
 permission.
 
+Je fais des tests sur ce repo (branche `develop`) — pour une version propre, se référer à la
+branche `main`.
+
 ## Structure
 
 ```
