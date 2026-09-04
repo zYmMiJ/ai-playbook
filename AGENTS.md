@@ -9,9 +9,15 @@ organized and versioned. Codex is not a second general-purpose development assis
 
 ## Codex responsibilities
 
-- Release notes generation (`meta/automation/release-notes/`).
-- Nothing else yet — extend this list only when a new automation workflow is added under
-  `.github/workflows/`, with its own prompt file.
+- None currently active. Release notes generation (`meta/automation/release-notes/`) used to run
+  through Codex ([issue #15](https://github.com/zYmMiJ/ai-playbook/issues/15)) but now runs as a
+  plain deterministic script instead — see
+  [issue #20](https://github.com/zYmMiJ/ai-playbook/issues/20) — because the task never actually
+  needed a model (conventional-commit parsing, no creative generation). The setup below (API key,
+  secret, security practices) is kept ready in `meta/automation/README.md` for whichever future
+  automation genuinely needs an LLM.
+- Extend this list only when a new automation workflow under `.github/workflows/` actually calls
+  Codex, with its own prompt file.
 
 ## Rules
 

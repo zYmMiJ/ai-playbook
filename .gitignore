@@ -7,7 +7,6 @@
 # .claude/hooks/block-banwords.py et rules/hooks.md.
 .claude/hooks/banwords.local.txt
 
-# Fichiers de travail éphémères du workflow codex-release-notes.yml (écrits par le runner GitHub
-# Actions dans le workspace, jamais commités — au cas où les commandes sont rejouées en local).
-/.codex-prompt.md
+# Fichier de travail éphémère du workflow release-notes.yml (écrit par le runner GitHub Actions
+# dans le workspace, jamais commité — au cas où generate.sh est rejoué en local).
 /release-notes.md

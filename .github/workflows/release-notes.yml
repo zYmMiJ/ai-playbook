@@ -1,4 +1,4 @@
-name: Codex release notes
+name: Release notes
 
 # MVP volontairement manuel : pas de déclenchement automatique.
 # Pourra être étendu plus tard, par ex. :
@@ -62,43 +62,12 @@ jobs:
           echo "from_ref=$from_ref" >> "$GITHUB_OUTPUT"
           echo "to_ref=$to_ref" >> "$GITHUB_OUTPUT"
 
-      - name: Construire le contexte Git
-        id: context
+      - name: Générer les release notes (script déterministe, pas d'appel API)
         run: |
           set -euo pipefail
-
-          context_file="$RUNNER_TEMP/git-context.md"
-          {
-            echo "## Commit range"
-            echo "- from_ref: ${{ steps.range.outputs.from_ref }}"
-            echo "- to_ref: ${{ steps.range.outputs.to_ref }}"
-            echo "- generated_at: $(date -u +%Y-%m-%d)"
-            echo
-            echo "## Commit log (${{ steps.range.outputs.from_ref }}..${{ steps.range.outputs.to_ref }}, no merges)"
-            echo '```'
-            git log "${{ steps.range.outputs.from_ref }}..${{ steps.range.outputs.to_ref }}" \
-              --no-merges --date=short --pretty=format:'%h %s (%an, %ad)'
-            echo
-            echo '```'
-          } > "$context_file"
-
-          echo "context_file=$context_file" >> "$GITHUB_OUTPUT"
-
-      - name: Assembler le prompt (règles statiques + contexte Git)
-        id: prompt
-        run: |
-          set -euo pipefail
-          cat meta/automation/release-notes/prompt.md "${{ steps.context.outputs.context_file }}" \
-            > .codex-prompt.md
-          echo "prompt_file=.codex-prompt.md" >> "$GITHUB_OUTPUT"
-
-      - name: Générer les release notes via Codex
-        uses: openai/codex-action@v1
-        with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          permission-profile: ':read-only'
-          prompt-file: ${{ steps.prompt.outputs.prompt_file }}
-          output-file: release-notes.md
+          meta/automation/release-notes/generate.sh \
+            "${{ steps.range.outputs.from_ref }}" "${{ steps.range.outputs.to_ref }}" \
+            > release-notes.md
 
       - name: Publier l'artifact
         uses: actions/upload-artifact@v4
