@@ -5,6 +5,25 @@ Chargé automatiquement par Claude Code en session sur ce repo — symétrique �
 inventaire, origine) ; ce fichier est le mode opératoire pour qui travaille effectivement dans ce
 repo, humain ou Claude Code.
 
+## Ce que `README.md` ne doit pas contenir
+
+Constaté en pratique : une section peut dériver vers du narratif de décision au fil de plusieurs
+éditions dans une même session, chaque édition semblant raisonnable prise isolément (voir
+[`meta/tickets/22/`](meta/tickets/22/)). Deux garde-fous à appliquer en relisant une section avant
+de committer :
+
+- **Le tableau Inventaire est le seul niveau de détail par item** (skill/agent/rule/automation) —
+  une ligne, un lien vers le fichier réel. Pas de sous-section dédiée à un item précis ailleurs
+  dans le README, même allégée : le tableau plus le fichier lié suffisent toujours. Seule exception :
+  la section "AI tools", qui décrit les deux moteurs transverses du repo (Claude Code, Codex) — un
+  niveau au-dessus des items du tableau, pas un item du tableau lui-même.
+- **Jamais de narratif de décision** — comparaison d'options écartées, chaîne d'issues (`#15 →
+  #20`), justification d'un choix passé. Cette matière vit dans `meta/tickets/<ID>/`, référencée
+  uniquement depuis la colonne "Source" du tableau Inventaire (déjà la convention en place).
+
+Test rapide : *est-ce que cette phrase décrit l'état actuel, ou explique-t-elle pourquoi on en est
+arrivé là ?* La deuxième réponse va dans le ticket, jamais dans le README.
+
 ## Comment utiliser le contenu de ce repo
 
 Rien ici n'est un package à installer — tout se copie-colle et se modifie. Concrètement :
@@ -48,8 +67,9 @@ défaut pour toute contribution à ce repo — brancher `feature/*` depuis `deve
 ## Workflow actuel : traiter un ticket de bout en bout
 
 1. **Étude d'architecture en amont, conseillée avant d'ouvrir le ticket** — pour un sujet non
-   trivial, poser le design/la faisabilité avant d'entrer dans `start-ticket`. Fait aujourd'hui via
-   un prompt ad hoc, pas encore via un skill dédié dans ce repo — à évaluer :
+   trivial, poser le design/la faisabilité avant d'entrer dans `start-ticket`. Prompt
+   [`architecture-study`](prompts/architecture-study.md) pour la carte du repo existant ; pas
+   encore de skill dédié pour l'étude d'un design nouveau — à évaluer :
    `aidd-pm/05-spike` sur [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework)
    (spike borné par la preuve, pour une incertitude qui bloque l'estimation/la faisabilité/le
    design) semble le candidat le plus proche, pas encore testé.
