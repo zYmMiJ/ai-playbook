@@ -8,3 +8,5 @@ moment.
 
 - [`refactor-review.md`](refactor-review.md) — faire relire un refactor avant de le lancer, en
   forçant l'énoncé d'un critère de succès vérifiable.
+- [`architecture-study.md`](architecture-study.md) — étude d'architecture d'un repo à partir du
+  code réel, avant un ticket non trivial ou en arrivant sur un repo inconnu.

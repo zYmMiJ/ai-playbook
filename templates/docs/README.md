@@ -12,6 +12,7 @@
 docs/
 ├── architecture/   Vue d'ensemble du système + concepts transverses
 ├── decisions/      Études/propositions rattachées à un ticket, avant implémentation
+│                   (ou ADR numérotées : garder README-adr.md à la place de README.md)
 └── modules/        Une fiche par module, pour un piège ou une règle spécifique
 ```
 

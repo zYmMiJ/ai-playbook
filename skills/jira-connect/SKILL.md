@@ -1,18 +1,18 @@
 ---
 name: jira-connect
 description: >
-  Configure et teste la connexion au Jira auto-hébergé de gouv.nc (jira.gouv.nc), par Personal
+  Configure et teste la connexion à un Jira auto-hébergé (Data Center/Server), par Personal
   Access Token (API REST, mode principal) ou par cookie de session manuel (sans PAT), et permet de
   récupérer un ticket par sa clé. Se déclenche pour "connecte-toi à Jira", "teste la connexion
   Jira", "récupère le ticket JIRA depuis Jira", "configure l'accès Jira", "connexion Jira sans
   token".
 ---
 
-# Connexion à jira.gouv.nc
+# Connexion à un Jira auto-hébergé
 
-Jira **Data Center/Server auto-hébergé**, pas d'OAuth ni d'API token façon Atlassian Cloud
-(gouv.nc n'est pas sur `*.atlassian.net`, cf. `jira.gouv.nc` qui renvoie une page de login
-classique aux tentatives d'accès non authentifiées). Deux modes :
+Jira **Data Center/Server auto-hébergé**, pas d'OAuth ni d'API token façon Atlassian Cloud (une
+instance hors `*.atlassian.net`, qui renvoie une page de login classique aux tentatives d'accès non
+authentifiées). Deux modes :
 
 - **Mode A — Personal Access Token** (principal, scriptable, voir ci-dessous) — nécessite de créer
   un PAT ; c'est le mode à utiliser par défaut.
@@ -20,29 +20,30 @@ classique aux tentatives d'accès non authentifiées). Deux modes :
   pourquoi dans cette section). À réserver au cas où l'utilisateur ne peut/veut vraiment pas créer
   de PAT.
 
-> Ce skill est spécifique à `jira.gouv.nc` (infra réellement partagée par tous les projets
-> gouv-nc), pas à un tracker générique — copier tel quel dans chaque repo gouv-nc, adapter
-> l'URL/le tracker si utilisé ailleurs.
+> **À adapter par projet** : `<jira-host>` (hôte de l'instance, partagé en général par tous les
+> repos d'une même organisation — copier tel quel d'un repo à l'autre de cette organisation), et le
+> pattern de clé de ticket (`<PREFIX>-<NUM>`). Pour un autre tracker (Jira Cloud, Linear, GitHub
+> Issues...), ce skill est à remplacer, pas à adapter.
 
 ## Mode A — Personal Access Token
 
 Config stockée dans `.claude/jira.env` — jamais committée (`.claude/*.env` exclu localement, voir
 `CLAUDE.md` du projet). Config **propre à chaque repo** : ne pas supposer qu'une config déjà faite
-sur un autre projet gouv-nc s'applique ici — chaque dépôt a son propre `.claude/`, jamais partagé
-entre repos, même si le PAT sous-jacent (créé une fois sur `jira.gouv.nc`) est réutilisable tel
-quel d'un repo à l'autre.
+sur un autre projet de la même organisation s'applique ici — chaque dépôt a son propre `.claude/`,
+jamais partagé entre repos, même si le PAT sous-jacent (créé une fois sur `<jira-host>`) est
+réutilisable tel quel d'un repo à l'autre.
 
 ### 1. Configuration (une fois par poste et par repo)
 
 Chercher `.claude/jira.env` :
 
 - **S'il existe** : `set -a && source .claude/jira.env && set +a`, passer à l'étape 2.
-- **Sinon** : demander à l'utilisateur `JIRA_BASE_URL` (ex. `https://jira.gouv.nc`, sans slash
+- **Sinon** : demander à l'utilisateur `JIRA_BASE_URL` (ex. `https://<jira-host>`, sans slash
   final) et un Personal Access Token (Jira → avatar en haut à droite → *Personal Access Tokens* →
-  *Create token*) — s'il en a déjà créé un pour un autre projet gouv-nc, il peut le réutiliser tel
-  quel, seul le fichier de config est propre à ce repo. Écrire dans `.claude/jira.env` :
+  *Create token*) — s'il en a déjà créé un pour un autre projet de la même instance, il peut le
+  réutiliser tel quel, seul le fichier de config est propre à ce repo. Écrire dans `.claude/jira.env` :
   ```
-  JIRA_BASE_URL=https://jira.gouv.nc
+  JIRA_BASE_URL=https://<jira-host>
   JIRA_PAT=<token>
   ```
   Ne jamais afficher le token en clair dans une sortie susceptible d'être partagée/loggée au-delà
@@ -63,7 +64,7 @@ pour un test de connectivité.
   à l'utilisateur avec l'identité retournée (preuve que ce n'est pas un faux positif).
 - **401/403** : token invalide, expiré, ou révoqué — les PAT Jira ont une durée de vie configurable
   (souvent limitée à quelques mois) ; proposer d'en régénérer un.
-- **Timeout / connexion refusée** : probablement un réseau interne gouv.nc, accès hors VPN — demander
+- **Timeout / connexion refusée** : probablement une instance sur réseau interne, accès hors VPN — demander
   à l'utilisateur s'il faut être connecté à un VPN/réseau spécifique avant de conclure à un problème
   de token.
 - **Erreur SSL/certificat** : possible CA interne non reconnu par le trust store système — **ne
@@ -80,7 +81,7 @@ Une fois la connexion validée :
 curl -s -H "Authorization: Bearer $JIRA_PAT" "$JIRA_BASE_URL/rest/api/2/issue/<CLE>"
 ```
 
-`<CLE>` = ex. `RUE-316`, `GUE-4494`. Réponse JSON complète (résumé, description, statut,
+`<CLE>` = `<PREFIX>-<NUM>`. Réponse JSON complète (résumé, description, statut,
 commentaires...).
 
 Branché sur le skill [`start-ticket`](../start-ticket/SKILL.md) (étape 1) : quand l'utilisateur ne
@@ -100,7 +101,7 @@ la requête échoue.
 **Pas un flux OAuth automatique** : le flux "popup de connexion qui revient toute seule avec un
 token" marche dans certains outils (Bruno sur `local-keycloak`, `gh auth login`, `claude mcp add`)
 parce qu'une app OAuth y est déjà enregistrée avec une redirect URI utilisable — rien de tel
-n'existe côté Jira gouv.nc, et ça demanderait une action d'un admin Jira (Application Links) pour
+n'existe en général côté Jira auto-hébergé, et ça demanderait une action d'un admin Jira (Application Links) pour
 exister. Seule l'approche manuelle ci-dessous est réaliste (à revérifier si `claude-in-chrome` est
 installé un jour : une lecture directe des pages dans un navigateur piloté redeviendrait
 envisageable).
@@ -109,7 +110,7 @@ envisageable).
 
 1. L'utilisateur se connecte à `$JIRA_BASE_URL` dans **son propre navigateur** (normalement, pas
    d'action de ma part).
-2. Il récupère le cookie `JSESSIONID` (DevTools → Application/Storage → Cookies → `jira.gouv.nc`)
+2. Il récupère le cookie `JSESSIONID` (DevTools → Application/Storage → Cookies → `<jira-host>`)
    et le communique.
 3. Test/usage :
    ```bash
