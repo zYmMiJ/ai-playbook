@@ -12,7 +12,7 @@ description: >
 
 1. `git diff --staged` (ou `git diff` si rien n'est stagé) — ne jamais deviner le contenu du diff.
 2. `git log --oneline -10` pour repérer la convention déjà en usage sur ce repo (Conventional
-   Commits type `feat(scope): ...`, préfixe ticket type `RUE-316: ...`, etc.) — s'aligner dessus
+   Commits type `feat(scope): ...`, préfixe ticket type `<PREFIX>-<NUM>: ...`, etc.) — s'aligner dessus
    plutôt qu'imposer un format générique.
 3. Résumer **le pourquoi**, pas seulement le quoi : le diff montre déjà ce qui a changé, le message
    doit apporter le contexte qui n'est pas dans le code (raison du choix, ticket lié, effet de bord

@@ -14,7 +14,7 @@ Structure cible : `tickets/<ID>/analyse.md` (exploration, sans code écrit) + `t
 
 **Statut** — une des 4 valeurs `à valider` / `validé` / `en implémentation` / `implémenté`, ou une
 raison de blocage explicite si le ticket est en attente d'un tiers (ex. `en attente maquette`,
-`en attente arbitrage RUE-XXX`).
+`en attente arbitrage <PREFIX>-<NUM>`).
 
 > **À adapter par projet** en copiant ce skill : le format d'ID de ticket, la source (Jira/Linear/
 > GitHub Issues...), et les "rappels transverses" en bas de fichier sont spécifiques à chaque repo.

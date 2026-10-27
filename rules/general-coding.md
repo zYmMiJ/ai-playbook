@@ -27,6 +27,23 @@ projet. Ce qui est spécifique à un framework va dans le repo du projet, pas ic
   [`../prompts/refactor-review.md`](../prompts/refactor-review.md)).
 - Ne jamais committer/pousser sans demande explicite pour ce tour précis — une autorisation donnée
   une fois ne vaut pas pour la suite de la session.
+- Sur un traitement par lot (migration, génération, comparaison sur N entités), le lancer d'abord
+  sur **un seul élément** et vérifier le résultat contre un chiffre déjà connu avant de relancer
+  sur tout le lot — un changement correct en théorie (clé mal normalisée, collation insensible à la
+  casse) produit des écarts silencieux qui ne se voient qu'à la comparaison.
+
+## Qui possède quoi
+
+Écrire dans le `CLAUDE.md` du projet, pour chaque fichier/dossier qui n'est pas du code ordinaire :
+
+- **Généré** (par quel script) → ne jamais l'éditer à la main, modifier le générateur — sinon
+  perdu au prochain run.
+- **Rempli par l'utilisateur** (ex. une colonne de statut dans un registre) → jamais par un script
+  ni par l'IA, même "pour aider".
+- **Archive figée** (ancienne implémentation gardée comme filet de rollback) → ne pas la modifier ;
+  un besoin qui semble la concerner concerne en fait son remplaçant.
+
+Sans cette carte, une session corrige au plus court : le fichier sous les yeux, pas sa source.
 
 ## Revue
 
@@ -34,3 +51,7 @@ projet. Ce qui est spécifique à un framework va dans le repo du projet, pas ic
   explicitement (règles désactivées) avant de s'y fier.
 - Un test qui passe ne prouve la correction que de ce qu'il couvre — vérifier la couverture réelle
   avant de présumer qu'un changement est testé.
+- Dire explicitement ce qui **n'a pas été vérifié** — surtout quand rien n'est testable localement
+  (config de production, déploiement, infra) : préciser ce qui a été validé (ex. syntaxe seule via
+  `docker compose config`, `sh -n`) et ce qui reste à vérifier en conditions réelles, plutôt que
+  laisser croire à un changement "testé".

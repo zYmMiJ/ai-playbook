@@ -27,6 +27,30 @@ manuelle faite avec jugement, pas juste un script.
 > `pom.xml`, bugs connus de génération du spec...). Sans cette section, les étapes 1 et 3
 > ci-dessous restent correctes en principe mais demandent plus de jugement à l'exécution.
 
+## Variante : une liste de cas de test comme référence
+
+Le spec OpenAPI dit *quels endpoints et paramètres existent*, pas *quels cas tester* (filtre
+trouvé/non trouvé, page vide, variantes d'auth anonyme/utilisateur/service…). Dès que les
+collections servent à tester plutôt qu'à seulement appeler l'API, éprouvé sur un projet réel :
+
+- **Un document de référence unique** (ex. `collection-apis/liste-des-cas.md`) : un cas = un
+  couple (endpoint, intention de test), ses variantes notées à côté — pas une ligne par fichier
+  `.bru`. Maintenu à part (lecture des Controllers + cas décidés avec l'utilisateur), jamais déduit
+  des collections.
+- **Bruno l'implémente au complet** (couverture exhaustive, public développeur/audit).
+- **Postman l'adapte** : collection fonctionnelle pour explorer/démontrer l'API à la main, éditée
+  directement depuis la liste des cas — **jamais convertie depuis Bruno**, même comme brouillon à
+  curer : essayé puis abandonné, les descriptions écrites pour un public développeur (noms de
+  classes, détails de sécurité) fuyaient systématiquement dans la collection de démo.
+- En cas d'écart, la liste des cas gagne : les collections sont en retard, pas l'inverse. Un script
+  d'extraction de l'état Bruno sert à *détecter* l'écart, jamais à décider du contenu de la liste.
+- Jamais d'intention de test inventée : elle vient du Controller, d'un cas discuté avec
+  l'utilisateur, ou du patron d'un endpoint similaire déjà dans la liste — sinon poser la question.
+
+Dans ce cas, les étapes 2 et 3 ci-dessous ne gèrent plus que la structure (endpoints, paramètres) ;
+le choix des requêtes à créer suit la liste des cas. Sur un projet qui en arrive là, éclater ce
+skill en trois (liste des cas / Bruno / Postman) plutôt que d'en faire un seul plus long.
+
 ## 0. Configuration (une seule fois par projet)
 
 Chercher `.claude/api-sync.env` à la racine du repo.

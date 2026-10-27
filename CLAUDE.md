@@ -48,8 +48,9 @@ défaut pour toute contribution à ce repo — brancher `feature/*` depuis `deve
 ## Workflow actuel : traiter un ticket de bout en bout
 
 1. **Étude d'architecture en amont, conseillée avant d'ouvrir le ticket** — pour un sujet non
-   trivial, poser le design/la faisabilité avant d'entrer dans `start-ticket`. Fait aujourd'hui via
-   un prompt ad hoc, pas encore via un skill dédié dans ce repo — à évaluer :
+   trivial, poser le design/la faisabilité avant d'entrer dans `start-ticket`. Prompt
+   [`architecture-study`](prompts/architecture-study.md) pour la carte du repo existant ; pas
+   encore de skill dédié pour l'étude d'un design nouveau — à évaluer :
    `aidd-pm/05-spike` sur [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework)
    (spike borné par la preuve, pour une incertitude qui bloque l'estimation/la faisabilité/le
    design) semble le candidat le plus proche, pas encore testé.
