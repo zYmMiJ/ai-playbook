@@ -65,7 +65,14 @@ git tag --list | grep -x "<X.Y.Z>"    # doit ne rien renvoyer
 tag existe déjà**, s'arrêter et clarifier avec l'utilisateur avant de continuer — ne pas deviner un
 numéro.
 
-### 1. Tag + push
+### 1. Notes de release — avant le tag
+
+Générer les notes de `<dernier-tag>` à la HEAD qui va être taguée, et les faire merger sur la
+branche par défaut **avant** de taguer : le tag livre alors le code et ses notes ensemble, sans
+commit de rattrapage après coup. Voir le skill
+[`generate-release-note`](../generate-release-note/SKILL.md).
+
+### 2. Tag + push
 
 ```bash
 git log --oneline | head -5          # repérer le dernier commit pertinent (pas un commit de bump seul)
@@ -75,12 +82,6 @@ git push origin tag X.Y.Z            # déclenche le pipeline de release côté 
 
 Si le redéploiement ne suit pas automatiquement le push du tag côté CI (à vérifier par projet), le
 dire explicitement plutôt que de supposer que le push du tag suffit.
-
-### 2. Notes de release — une fois la release validée
-
-À faire seulement **après** que l'utilisateur confirme que la release déployée est bonne (pas juste
-taguée/pushée) — pas avant, pas automatiquement à la suite de l'étape 1. Voir le skill
-[`generate-release-note`](../generate-release-note/SKILL.md).
 
 ## Garde-fous avant de taguer
 

@@ -3,8 +3,8 @@ name: generate-release-note
 description: >
   Génère les notes de release entre deux tags/commits, groupées par type conventionnel avec
   référence de ticket, et les écrit dans un fichier local. Se déclenche pour "génère les notes de
-  release", "écris le changelog de la version X", "notes de release depuis le dernier tag" — après
-  qu'une release taguée a été validée en environnement, jamais avant.
+  release", "écris le changelog de la version X", "notes de release depuis le dernier tag" — pendant
+  la préparation d'une release, avant de poser son tag.
 ---
 
 # Générer les notes de release
@@ -14,11 +14,12 @@ description: >
 > la convention de préfixe de commit (`type(scope): résumé`, `type: résumé`, sans convention...)
 > sont spécifiques à chaque repo. Un exemple concret d'instanciation est donné en bas de fichier.
 
-Complète le skill [`release`](../release/SKILL.md) : à lancer seulement une fois qu'une release
-taguée a été **validée en environnement** par l'utilisateur (pas juste taguée/pushée) — pas avant,
-pas automatiquement à la suite d'un tag. S'applique pareil pour un tag issu d'un `hotfix/*` en
-[Git Flow](../../rules/git-flow.md) — un correctif urgent mérite une entrée au même titre qu'une
-release normale.
+Complète le skill [`release`](../release/SKILL.md) : à lancer **avant le tag**, une fois le contenu
+de la release figé — en [Git Flow](../../rules/git-flow.md), sur la branche `release/*` ou
+`hotfix/*`, avant sa fusion dans `main`. Les notes sont ainsi committées avec le code qu'elles
+décrivent, et le tag pointe sur un état qui les contient déjà — pas de commit de notes après coup
+qu'il faudrait refaire passer dans `main`. Un hotfix mérite une entrée au même titre qu'une release
+normale.
 
 ## Portée par défaut : fichier local, rien de publié
 
@@ -38,10 +39,11 @@ avec l'équipe, même une fois écrit.
 ### 1. Lister les commits depuis le dernier tag
 
 ```bash
-git log <dernier-tag>..<hash-cible> --no-merges --oneline   # ex: git log 1.4.0..a1b2c3d --no-merges --oneline
+git log <dernier-tag>..HEAD --no-merges --oneline   # depuis la branche release/hotfix, ex: git log 1.4.0..HEAD --no-merges --oneline
 ```
 
-`<hash-cible>` = le commit qui vient d'être taggé (voir skill `release`, étape 1).
+`HEAD` = la branche qui va être fusionnée puis taguée (`release/X.Y.Z` en Git Flow). Le numéro
+`X.Y.Z` est déjà fixé à ce stade (voir skill `git-flow`, action `release`).
 
 ### 2. Filtrer et grouper
 
@@ -79,7 +81,8 @@ que d'être reformulé à la devinette.
 
 ## Règles
 
-- Jamais avant que l'utilisateur ait confirmé la release validée en environnement.
+- Avant le tag, jamais après : si le contenu de la release change encore (correctif sur la branche
+  `release/*`), régénérer les notes avant de fusionner.
 - Jamais de publication (release GitHub/GitLab, post, e-mail) sans demande explicite — uniquement le
   fichier local, sauf portée élargie validée par l'utilisateur.
 - Pas de commit sans demande explicite pour ce tour (même règle générale que le reste du repo, voir

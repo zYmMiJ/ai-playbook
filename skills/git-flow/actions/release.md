@@ -22,18 +22,19 @@ l'utilisateur, même règle que pour `feature`.
 
 ## Terminer
 
-Trois étapes, dans cet ordre, **aucune ne doit être oubliée** :
+Quatre étapes, dans cet ordre, **aucune ne doit être oubliée** :
 
+0. **Notes de release sur `release/X.Y.Z`** — générées et committées sur la branche avant la
+   fusion (voir [`generate-release-note`](../../generate-release-note/SKILL.md)), pour que le tag
+   les contienne.
 1. **Fusionner `release/X.Y.Z` → `main`** — proposer la fusion (PR ou merge direct selon la
    convention du repo), ne jamais l'exécuter soi-même sans demande explicite pour ce tour.
 2. **Tag + push sur `main`** — voir le skill [`release`](../../release/SKILL.md), à partir de son
-   étape 1 directement (l'étape 0 "déterminer le tag" ne s'applique pas : `X.Y.Z` est déjà fixé
+   étape 2 directement (ses étapes 0 et 1 ne s'appliquent pas : notes déjà faites à l'étape 0
+   ci-dessus, et "déterminer le tag" inutile : `X.Y.Z` est déjà fixé
    depuis le démarrage). Même interdiction absolue : jamais exécuté par Claude lui-même.
 3. **Fusionner `release/X.Y.Z` → `develop`** (retour) — à faire **même si l'utilisateur ne le
    redemande pas explicitement**, c'est cette étape qui est le plus souvent oubliée. La rappeler
    activement plutôt que d'attendre qu'on la demande.
 
 Une fois les deux fusions faites, la branche `release/X.Y.Z` peut être supprimée.
-
-Notes de release : une fois le tag validé en environnement, voir
-[`generate-release-note`](../../generate-release-note/SKILL.md).
