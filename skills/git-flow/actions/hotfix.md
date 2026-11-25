@@ -24,8 +24,8 @@ Mêmes étapes que pour une release, **dans le même ordre**, aucune omise :
 1. **Fusionner `hotfix/X.Y.Z` → `main`** — proposer, jamais exécuter soi-même sans demande
    explicite pour ce tour.
 2. **Tag + push sur `main`** — voir le skill [`release`](../../release/SKILL.md), à partir de son
-   étape 2 (version déjà fixée au démarrage, notes faites sur la branche — voir plus bas). Interdiction absolue : jamais exécuté par Claude
-   lui-même.
+   étape 2 (version déjà fixée au démarrage, notes faites sur la branche — voir plus bas). Exécuté seulement après permission explicite de
+   l'utilisateur.
 3. **Fusionner `hotfix/X.Y.Z` → `develop`** (retour) — à rappeler activement, même sans demande.
 4. **Si une `release/*` est ouverte en parallèle** (signalé au démarrage) : fusionner aussi le
    correctif dedans (`main` dans `release/*`, ou cherry-pick selon la convention du projet) —
