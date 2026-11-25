@@ -44,7 +44,7 @@ description: >
 - [ ] Autre : ...
 
 ## Description
-<!-- résumé concis, orienté fonctionnel -->
+<!-- pourquoi fonctionnel, une phrase par ligne -->
 
 ## Comportement
 <!-- ce qui change côté utilisateur, en quelques puces -->
@@ -52,6 +52,8 @@ description: >
 ## Comment tester
 <!-- étapes de vérification, sans le setup/l'installation -->
 ```
+
+Cocher la ou les cases pertinentes et supprimer les autres.
 
 ## Règles
 
