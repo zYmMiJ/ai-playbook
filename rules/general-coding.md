@@ -26,7 +26,8 @@ projet. Ce qui est spécifique à un framework va dans le repo du projet, pas ic
 - Sur un refactor multi-fichiers, poser un critère de succès vérifiable avant d'éditer (voir
   [`../prompts/refactor-review.md`](../prompts/refactor-review.md)).
 - Ne jamais committer/pousser sans demande explicite pour ce tour précis — une autorisation donnée
-  une fois ne vaut pas pour la suite de la session.
+  une fois ne vaut pas pour la suite de la session. Pour que ce soit garanti et pas seulement
+  suivi : règle `ask`/`deny` dans les settings (voir [`permissions.md`](permissions.md)).
 - Sur un traitement par lot (migration, génération, comparaison sur N entités), le lancer d'abord
   sur **un seul élément** et vérifier le résultat contre un chiffre déjà connu avant de relancer
   sur tout le lot — un changement correct en théorie (clé mal normalisée, collation insensible à la
@@ -47,6 +48,8 @@ Sans cette carte, une session corrige au plus court : le fichier sous les yeux, 
 
 ## Revue
 
+- Un travail est fini quand un check exécutable passe et que sa sortie a été montrée, pas quand il
+  en a l'air (voir [`verification.md`](verification.md)).
 - Un `lint` qui passe ne veut pas dire "sans defaut" — vérifier ce que le linter du projet ignore
   explicitement (règles désactivées) avant de s'y fier.
 - Un test qui passe ne prouve la correction que de ce qu'il couvre — vérifier la couverture réelle

@@ -82,12 +82,12 @@ défaut pour toute contribution à ce repo — brancher `feature/*` depuis `deve
    `plan.md`, jamais pris pour argent comptant : avant de reprendre un ticket, vérifier dans le
    code/git ce que le plan prétend avoir livré — un statut "en implémentation" peut décrire du
    travail qui n'existe plus (voir point 5).
-4. **Implémentation dans l'arbre de travail, jamais committée par Claude** — plus strict que la
-   règle générale "pas de commit sans demande explicite pour ce tour"
-   ([`rules/general-coding.md`](rules/general-coding.md)) : sur ce repo, `.claude/settings.local.json`
-   n'accorde même pas la permission `git commit`/`git push`/`gh` — seules les commandes de lecture
-   (`status`/`diff`/`log`/`branch`/`show`) le sont. C'est moi qui committe systématiquement, à la
-   fin, moi-même.
+4. **Implémentation dans l'arbre de travail, commit seulement sur ma permission** — en fin de
+   ticket, Claude m'affiche le message de commit complet (sans aucune mention de Claude : ni
+   `Co-Authored-By`, ni « Generated with »), puis me demande la permission avant de lancer
+   `git commit`. Garanti par `.claude/settings.json` : `ask` sur `git commit`, `deny` sur
+   `git push`/`gh pr merge` (voir [`rules/permissions.md`](rules/permissions.md)) — une règle posée,
+   pas une permission absente, qui ne tiendrait pas en auto mode. Push, PR et merge restent à moi.
 5. **Pourquoi cette règle est stricte** — un vécu concret, pas une précaution abstraite : sur un
    ticket récent, du code (DTO, mapper, tests) a été conçu et discuté en session, jamais committé,
    et perdu à la session suivante — la PR réellement mergée sous ce même nom de branche concernait
@@ -98,7 +98,7 @@ défaut pour toute contribution à ce repo — brancher `feature/*` depuis `deve
    validées (voir [`rules/docs-structure.md`](rules/docs-structure.md)) — parfois plusieurs
    documents liés à un même ticket (ex. stratégie initiale, validation architecte, brief transverse
    pour un chantier conséquent).
-7. **Commit + PR, une fois que je committe** — message `type(<PREFIX>-<NUM>): résumé` (voir
+7. **Commit + PR** — message `type(<PREFIX>-<NUM>): résumé` (voir
    `writing-good-commits`), branche `type/<PREFIX>-<NUM>`. Le préfixe de branche n'est pas toujours
    cohérent dans l'historique réel (`fix/`, `feat/`, `feature/` coexistent) — une convention
    déclarée n'est pas toujours une convention respectée, à garder en tête plutôt qu'à corriger

@@ -79,6 +79,7 @@ future automatisation, setup et bonnes pratiques de sécurité dans
 | [`local-changes-reviewer`](agents/local-changes-reviewer.md) | Gabarit de revue qualité limitée au diff local (working tree + commits de branche non mergés) : idiomes, conventions du repo, tests, migrations. Complète `security-reviewer`. | Claude Code | généralisé à partir d'un reviewer Kotlin/Spring Boot réel |
 | [`database-analyst`](agents/database-analyst.md) | Gabarit d'analyse d'une base (souvent legacy) en `permissionMode: plan` : propose requêtes SQL et plan de rapport, agrégats uniquement. | Claude Code | généralisé à partir d'un projet réel — voir `data-governance.md` |
 | [`git-flow-reviewer`](agents/git-flow-reviewer.md) | Générique (pas un gabarit à remplir) : vérifie qu'une branche/PR respecte Git Flow (base, cible de fusion, double fusion main+develop) avant de la merger. | Claude Code | custom |
+| [`plan-compliance-reviewer`](agents/plan-compliance-reviewer.md) | Générique : compare un diff à son `plan.md`/`SPEC.md` et ne remonte que les écarts de correction ou d'exigences (exigence absente, cas limite non testé, dérive de scope), jamais le style. | Claude Code | custom — doc officielle Claude Code ([ticket 30](meta/tickets/30/)) |
 
 | Rules | Ce que ça fait | IA | Source |
 |---|---|---|---|
@@ -91,11 +92,16 @@ future automatisation, setup et bonnes pratiques de sécurité dans
 | [`data-governance.md`](rules/data-governance.md) | Projets avec accès à des données réelles : agrégats par défaut, jamais de valeurs individuelles ni d'artifact qui en contient, outils qui échantillonnent à neutraliser. | Claude Code | custom — retrouvé sur trois projets réels |
 | [`agents-md.md`](rules/agents-md.md) | `AGENTS.md` source unique des instructions, `CLAUDE.md` réduit à `@AGENTS.md` + spécifique Claude Code, `.claude/` vide tant qu'aucun besoin réel. | Claude Code | custom — quatre repos d'un même produit |
 | [`context-efficiency.md`](rules/context-efficiency.md) | Limiter la consommation de tokens d'une session : lecture ciblée, sous-agents à bon escient, sortie concise. | Claude Code | custom |
+| [`verification.md`](rules/verification.md) | Donner à Claude un check pass/fail comme critère de fin : quatre niveaux (consigne, `/goal`, hook `Stop`, relecteur vierge), preuve par la sortie de commande. | Claude Code | custom — doc officielle Claude Code ([ticket 30](meta/tickets/30/)) |
+| [`session-management.md`](rules/session-management.md) | Une session par chantier, `/clear`, plan mode, interview → `SPEC.md` → nouvelle session, `/rewind` et checkpoints, `/btw`, compaction. | Claude Code | custom — doc officielle Claude Code ([ticket 30](meta/tickets/30/)) |
+| [`permissions.md`](rules/permissions.md) | Modes de permission (auto, dontAsk…), règles allow/ask/deny, règle « jamais » posée en deny rule, sandbox, usage sans surveillance. | Claude Code | custom — doc officielle Claude Code ([ticket 30](meta/tickets/30/)) |
+| [`parallel-work.md`](rules/parallel-work.md) | Worktrees, `/batch`, boucle `claude -p` testée sur 2-3 fichiers d'abord, sortie JSON pour la CI, questions avant un run sans surveillance. | Claude Code | custom — doc officielle Claude Code ([ticket 30](meta/tickets/30/)) |
 
 | Prompts | Ce que ça fait | IA | Source |
 |---|---|---|---|
 | [`refactor-review.md`](prompts/refactor-review.md) | Force un plan vérifiable (fichiers impactés, critère de succès) avant de lancer un refactor multi-fichiers. | Claude Code | custom (sections "Refactors non triviaux" des `CLAUDE.md`) |
 | [`architecture-study.md`](prompts/architecture-study.md) | Étude d'architecture d'un repo à partir du code réel (couches, flux critique, dette avec `fichier:ligne`, hors périmètre, journal) avant un ticket non trivial. | Claude Code | généralisé à partir de deux études réelles |
+| [`spec-interview.md`](prompts/spec-interview.md) | Interview (`AskUserQuestion`) jusqu'à un `SPEC.md` autonome (fichiers, interfaces, hors périmètre, vérification de bout en bout), implémenté ensuite dans une nouvelle session. | Claude Code | custom — doc officielle Claude Code ([ticket 30](meta/tickets/30/)) |
 
 | Automation | Ce que ça fait | IA | Source |
 |---|---|---|---|

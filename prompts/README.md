@@ -10,3 +10,5 @@ moment.
   forçant l'énoncé d'un critère de succès vérifiable.
 - [`architecture-study.md`](architecture-study.md) — étude d'architecture d'un repo à partir du
   code réel, avant un ticket non trivial ou en arrivant sur un repo inconnu.
+- [`spec-interview.md`](spec-interview.md) — interview jusqu'à un `SPEC.md` autonome, puis
+  implémentation dans une nouvelle session.

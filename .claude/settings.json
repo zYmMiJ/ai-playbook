@@ -1,4 +1,8 @@
 {
+  "permissions": {
+    "ask": ["Bash(git commit *)"],
+    "deny": ["Bash(git push *)", "Bash(gh pr merge *)"]
+  },
   "hooks": {
     "PreToolUse": [
       {
