@@ -1,6 +1,5 @@
-Ticket reconstruit depuis la demande en session (pas d'issue GitHub existante) — **numéro provisoire
-`30`** (prochain numéro libre après #29), à renommer si l'issue reçoit un autre numéro. À recouper
-avec l'issue réelle dès qu'elle est créée.
+Ticket reconstruit depuis la demande en session, issue créée ensuite :
+[issue #30](https://github.com/zYmMiJ/ai-playbook/issues/30).
 
 ## Contexte
 

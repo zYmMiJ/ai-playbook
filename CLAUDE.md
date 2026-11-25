@@ -85,9 +85,10 @@ défaut pour toute contribution à ce repo — brancher `feature/*` depuis `deve
 4. **Implémentation dans l'arbre de travail, commit seulement sur ma permission** — en fin de
    ticket, Claude m'affiche le message de commit complet (sans aucune mention de Claude : ni
    `Co-Authored-By`, ni « Generated with »), puis me demande la permission avant de lancer
-   `git commit`. Garanti par `.claude/settings.json` : `ask` sur `git commit`, `deny` sur
-   `git push`/`gh pr merge` (voir [`rules/permissions.md`](rules/permissions.md)) — une règle posée,
-   pas une permission absente, qui ne tiendrait pas en auto mode. Push, PR et merge restent à moi.
+   `git commit` ; même chose avant chaque `git push`. Garanti par `.claude/settings.json` : `ask` sur
+   `git commit` et `git push`, `deny` sur `gh pr merge` (voir
+   [`rules/permissions.md`](rules/permissions.md)) — une règle posée, pas une permission absente, qui
+   ne tiendrait pas en auto mode. Le merge reste à moi.
 5. **Pourquoi cette règle est stricte** — un vécu concret, pas une précaution abstraite : sur un
    ticket récent, du code (DTO, mapper, tests) a été conçu et discuté en session, jamais committé,
    et perdu à la session suivante — la PR réellement mergée sous ce même nom de branche concernait
