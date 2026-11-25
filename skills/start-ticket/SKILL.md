@@ -59,6 +59,9 @@ ticket à l'autre) :
 - **Statut** en première ligne (voir ci-dessus).
 - **Changements fichier par fichier** — ce qui va changer, par fichier concerné.
 - **Cas limites** identifiés.
+- **Vérification** — la commande pass/fail (build, lint, tests ciblés existants, diff de sortie...)
+  qui dira que l'implémentation est finie, et le résultat attendu (voir
+  [`../../rules/verification.md`](../../rules/verification.md)).
 - **Décisions** — toute décision d'architecture/design prise pendant l'analyse, même mineure. Pour
   **chacune**, proposer (ne pas écrire) où elle devrait être documentée une fois validée — voir
   [`../../rules/docs-structure.md`](../../rules/docs-structure.md) pour la convention
@@ -70,16 +73,27 @@ ticket à l'autre) :
 les propositions de doc de l'étape 3. Ne rien implémenter avant. Une fois validé : statut →
 `validé`.
 
+Proposer ensuite de démarrer l'implémentation dans une **session vierge** (`/clear`, ou l'option
+d'approbation qui vide le contexte en plan mode) : `plan.md` est le relais, l'historique de
+l'analyse n'a plus à être relu à chaque tour.
+
 ## 5. Implémentation
 
 Implémenter en suivant les conventions du code environnant (voir le `CLAUDE.md` du projet). Statut
 → `en implémentation`.
 
+L'implémentation n'est finie que quand la commande de la section **Vérification** du plan passe —
+une commande qui s'appuie sur des tests **existants** (les nouveaux tests s'écrivent à l'étape 7).
+Pendant l'itération, **uniquement des tests ciblés** (ceux qui couvrent les fichiers touchés),
+**lancés en arrière-plan** ; jamais la suite complète à cette étape. Montrer la commande et sa
+sortie, pas seulement « ça passe ».
+
 ## 6. Fin d'implémentation — STOP
 
 Une fois le code écrit, **ne rien enchaîner automatiquement**. Présenter ce qui a été fait et
-demander explicitement une confirmation que l'implémentation est bonne. **Ne pas lancer les tests,
-ne pas toucher à la doc** tant que ce n'est pas confirmé.
+demander explicitement une confirmation que l'implémentation est bonne. **Ne pas écrire de nouveaux
+tests, ne pas lancer la suite complète, ne pas toucher à la doc** tant que ce n'est pas confirmé —
+seuls les tests ciblés de l'étape 5 ont tourné.
 
 ## 7. Après validation de l'implémentation
 
@@ -87,7 +101,11 @@ a. Écrire/compléter les tests. **Tests ciblés avant tests complets** : lancer
    couvrent les fichiers modifiés, réserver la suite complète à la validation finale de cette
    étape.
 b. Appliquer les mises à jour de doc **validées** à l'étape 3 — cette fois les écrire réellement.
-c. Proposer un message de commit référençant l'ID du ticket (voir le skill
+c. Faire relire le diff contre `plan.md` par un relecteur en contexte vierge (agent
+   [`plan-compliance-reviewer`](../../agents/plan-compliance-reviewer.md), ou `/code-review`) : seuls
+   les écarts de correction ou d'exigences comptent, pas le style. Corriger ou signaler chaque
+   écart.
+d. Proposer un message de commit référençant l'ID du ticket (voir le skill
    [`writing-good-commits`](../writing-good-commits/SKILL.md)) — ne pas committer soi-même sauf
    demande explicite pour ce tour.
 
