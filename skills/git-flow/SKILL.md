@@ -44,7 +44,7 @@ son type — lire seulement le fichier concerné, pas les trois d'un coup.
   d'autrui affecté) — les actions `*-start` peuvent l'exécuter directement quand l'utilisateur le
   demande. **Pousser, ouvrir une PR, fusionner, taguer restent soumis à la règle générale** : pas
   d'exécution sans demande explicite pour ce tour ([`rules/general-coding.md`](../../rules/general-coding.md)),
-  et pour le tag spécifiquement, l'interdiction absolue du skill [`release`](../release/SKILL.md)
-  s'applique (jamais tagué/poussé par Claude lui-même, même sur "go" explicite).
+  et pour le tag spécifiquement, la règle du skill [`release`](../release/SKILL.md) s'applique
+  (commandes affichées, exécutées seulement après permission explicite de l'utilisateur).
 - Avant de démarrer une branche, vérifier l'état réel de sa branche de base (`git fetch` puis
   comparer, pas juste supposer qu'elle est à jour localement).

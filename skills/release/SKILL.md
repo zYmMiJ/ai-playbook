@@ -1,8 +1,8 @@
 ---
 name: release
 description: >
-  Donne les commandes exactes pour sortir une release via tag Git (calcul du tag, garde-fous, push)
-  — sans jamais les exécuter soi-même. Se déclenche pour "sortir une release", "déployer en prod",
+  Sort une release via tag Git (calcul du tag, garde-fous, tag + push) — affiche les commandes
+  exactes et ne les exécute qu'après permission explicite de l'utilisateur. Se déclenche pour "sortir une release", "déployer en prod",
   "tagger une version", "quel est le prochain tag", "pourquoi <env> est en retard sur <env>",
   "relancer une release".
 ---
@@ -96,13 +96,22 @@ dire explicitement plutôt que de supposer que le push du tag suffit.
   préfixe `v` selon ce qui est déjà en usage sur ce repo — vérifier `git tag --list` plutôt que de
   supposer).
 
-## Interdiction absolue : ne jamais push ni tagger soi-même
+## Tag et push : seulement après permission explicite
 
-Ce skill ne fait que **donner les commandes** ci-dessus — il ne les exécute jamais. `git tag` et
-`git push origin tag ...` restent à taper par l'utilisateur lui-même, sans exception, même si
-l'utilisateur dit explicitement "go" ou "lance la release" : dans ce cas, réafficher les commandes
-prêtes à copier-coller, pas les exécuter. C'est une action difficile à annuler et visible en externe
-(déploie en environnement de release) — elle sort du périmètre de ce que Claude fait pour ce repo.
+Le tag et son push sont difficiles à annuler et visibles en externe (ils déploient en environnement
+de release). Avant de les lancer :
+
+1. Afficher les commandes exactes (`git tag X.Y.Z <hash>`, `git push origin tag X.Y.Z`), avec le
+   commit visé et le résultat des garde-fous ci-dessus.
+2. Attendre la permission explicite de l'utilisateur **pour ce tour** — une permission donnée pour
+   une release précédente ne vaut pas pour celle-ci.
+3. Seulement ensuite, les exécuter. Ne jamais réécrire ni déplacer un tag déjà poussé.
+
+À garantir côté settings plutôt qu'à laisser au jugement : règle `ask` sur `Bash(git push *)` (et
+`Bash(git tag *)` si on veut aussi la demande sur le tag local) — voir
+[`../../rules/permissions.md`](../../rules/permissions.md). Un projet qui veut garder le tag
+entièrement manuel pose une règle `deny` à la place : Claude affiche alors les commandes à
+copier-coller.
 
 ## Si le but n'est qu'un changement de config (pas de code)
 

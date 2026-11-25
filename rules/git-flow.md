@@ -46,8 +46,8 @@ projet en a réellement besoin plutôt que d'anticiper dans le vide.
 
 ## Tag et notes de release
 
-Le mécanisme de tag (calcul du numéro, garde-fous, interdiction pour Claude de taguer/pousser
-lui-même) est déjà couvert par le skill [`release`](../skills/release/SKILL.md) — pas dupliqué ici.
+Le mécanisme de tag (calcul du numéro, garde-fous, tag/push seulement après permission explicite
+de l'utilisateur) est déjà couvert par le skill [`release`](../skills/release/SKILL.md) — pas dupliqué ici.
 Une nuance entre les deux contextes où ce skill s'applique :
 
 - **Sans Git Flow** (son cas d'origine) : le numéro de version se lit sur `main` avec un suffixe de
@@ -55,8 +55,8 @@ Une nuance entre les deux contextes où ce skill s'applique :
   releases.
 - **Avec Git Flow** : le numéro est déjà figé **avant** le tag, au moment où `release/*` ou
   `hotfix/*` est créée (voir skill `git-flow`, actions `release`/`hotfix`) — l'étape "déterminer le
-  tag" du skill `release` ne s'applique pas, le reste (garde-fous, interdiction de taguer/pousser
-  soi-même) si.
+  tag" du skill `release` ne s'applique pas, le reste (garde-fous, permission explicite avant
+  de taguer/pousser) si.
 
 Les notes de release (skill [`generate-release-note`](../skills/generate-release-note/SKILL.md))
 se génèrent sur la branche `release/*` ou `hotfix/*`, avant sa fusion dans `main` et donc avant
