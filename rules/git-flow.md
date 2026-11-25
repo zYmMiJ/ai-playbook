@@ -59,7 +59,8 @@ Une nuance entre les deux contextes où ce skill s'applique :
   soi-même) si.
 
 Les notes de release (skill [`generate-release-note`](../skills/generate-release-note/SKILL.md))
-s'appliquent normalement une fois le tag pushé et la release validée, sans changement.
+se génèrent sur la branche `release/*` ou `hotfix/*`, avant sa fusion dans `main` et donc avant
+le tag.
 
 ## Lien avec un tracker GitHub Issues (kanban, mots-clés de fermeture)
 
