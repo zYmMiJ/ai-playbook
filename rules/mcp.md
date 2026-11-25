@@ -15,6 +15,12 @@ service (lire une MR et ses commentaires, un ticket, une table) sans passer par 
 parser — l'intérêt croît avec la fréquence d'usage dans une session, pas systématique pour un
 besoin ponctuel.
 
+**CLI d'abord quand elle existe** (`gh`, `glab`, CLI du tracker ou du cloud) : Claude sait déjà s'en
+servir, et pour une CLI qu'il ne connaît pas, `--help` suffit. MCP sert pour un système **sans**
+CLI. Raison concrète : un serveur MCP connecté ajoute ses noms d'outils et ses instructions au
+contexte de chaque session, même quand on ne s'en sert pas — désactiver ceux qui ne servent pas
+(`/mcp`), plutôt que de les laisser branchés « au cas où ».
+
 ## Gabarit : brancher un serveur MCP
 
 ```bash
@@ -37,8 +43,9 @@ en clair dedans (voir la config générée avant de commit).
 
 ## Idées de serveurs MCP courants (à évaluer par projet, non activés par défaut)
 
-- **Forge Git** (GitLab/GitHub) — lire/commenter une MR/PR, son pipeline CI, sans repasser par
-  `gh`/`git` en ligne de commande.
+- **Forge Git** (GitLab/GitHub) — lire/commenter une MR/PR, son pipeline CI. Redondant dès que
+  `gh`/`glab` est installé et authentifié sur le poste : ne le brancher que si la CLI n'est pas
+  disponible.
 - **Base de données en lecture seule** — interroger la base du projet sans repasser par un client
   SQL à chaque fois. Redondant avec ce que `Bash` + le client CLI font déjà : priorité basse sauf
   usage très fréquent.

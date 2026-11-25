@@ -13,7 +13,16 @@ Un hook se déclare dans `settings.json`/`settings.local.json`, sous `hooks.<ÉV
   contrôle de compilation ou de format rapide.
 - `PreToolUse` (matcher `Bash`) : avant une commande shell — pour bloquer ou logger certaines
   commandes.
-- `Stop` : quand Claude termine son tour — pour un résumé ou une vérification de fin de tâche.
+- `Stop` : quand Claude termine son tour — pour un résumé ou une vérification de fin de tâche
+  (gabarit plus bas).
+- `SessionStart` (matcher `compact`) : après une compaction — pour ré-injecter un contexte qui ne
+  vient pas du `CLAUDE.md` racine (celui-ci est déjà relu depuis le disque).
+
+Types de hook : `command` (script, le cas courant), `http`, `mcp_tool`, `prompt` (un modèle évalue
+en un tour) et `agent` (un sous-agent qui peut lire des fichiers avant de décider — expérimental).
+
+Signe qu'une consigne de `CLAUDE.md` devrait être un hook : on a déjà ajouté de l'emphase et elle
+est encore ignorée de temps en temps.
 
 ## Gabarit : compilation rapide après édition
 
@@ -52,6 +61,36 @@ pour parser le JSON stdin (`python3` ci-dessus) est bien disponible sur le poste
 `hooks` si elle existe déjà), puis ouvrir `/hooks` une fois pour que Claude Code recharge la
 config (le watcher ne surveille que les dossiers qui avaient déjà un fichier de settings au
 démarrage de la session).
+
+## Gabarit : bloquer la fin du tour tant que le check échoue
+
+Le niveau « garanti » de [`verification.md`](verification.md) : à chaque fois que Claude veut
+terminer son tour, le harness lance le check ; **code de sortie 2** = refus de s'arrêter, et ce qui
+est écrit sur stderr revient à Claude comme raison (d'où le `1>&2`).
+
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          { "type": "command", "command": "<COMMANDE_DE_CHECK_RAPIDE> 1>&2 || exit 2", "timeout": 120 }
+        ]
+      }
+    ]
+  }
+}
+```
+
+- Garder un check **rapide** (typecheck, lint, tests ciblés) — il tourne à chaque fin de tour.
+- Garde-fou anti-boucle intégré : après 8 blocages consécutifs sans appel d'outil entre eux, Claude
+  Code force la fin du tour (`CLAUDE_CODE_STOP_HOOK_BLOCK_CAP` pour changer ce plafond). Un script
+  peut aussi lire `stop_hook_active` (stdin JSON, `true` quand Claude continue déjà à cause d'un
+  hook Stop) pour ne bloquer qu'une fois par tour, comme le fait `check-inventory.py` ci-dessous.
+- Équivalent limité à la session, sans fichier de settings : `/goal <condition>` (un modèle vérifie
+  la condition après chaque tour).
+
+Vérifié dans la doc officielle (`hooks`, `best-practices`, `goal`) le 2026-11-26.
 
 ## Autres idées
 
