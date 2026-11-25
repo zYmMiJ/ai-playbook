@@ -100,10 +100,16 @@ donne de meilleures réponses. Quand ouvrir/vider/reprendre une session :
   prompt. Deux familles : **déterministe** (hooks, deny rules, managed settings — appliqués par le
   harness, toujours) et **indicatif** (prompt, `CLAUDE.md`, skills — Claude peut juger qu'une
   consigne ne s'applique pas). Ce qui ne doit jamais plier va dans la première.
-- Un contexte pollué se nettoie, il ne se corrige pas : deux tentatives ratées restent relues à
-  chaque tour (→ `/clear` + meilleur prompt, ou `/rewind`) ; des serveurs MCP connectés mais
-  inutiles ajoutent leurs outils à chaque requête (→ les désactiver, voir [`mcp.md`](mcp.md)) ;
-  deux consignes contradictoires dans `CLAUDE.md` et une rule (→ `/doctor prompt-audit`).
+- Un contexte abîmé se nettoie, il ne se corrige pas. Quatre façons dont il se dégrade (taxonomie
+  externe, non officielle Claude Code : [« How Long Contexts Fail »](https://www.dbreunig.com/2025/06/22/how-contexts-fail-and-how-to-fix-them.html),
+  Drew Breunig, 2025), avec la parade Claude Code de chacune :
+
+  | Défaillance | Ce qui se passe | Parade |
+  |---|---|---|
+  | **Poisoning** (empoisonnement) | Une erreur ou une hallucination entre dans le contexte et y est reprise ensuite comme un fait. | `/rewind` avant l'erreur, ou `/clear` + meilleur prompt après deux corrections ratées. |
+  | **Distraction** | Le contexte devient si long que le modèle s'appuie sur l'historique plutôt que sur ce qu'il sait faire, et répète ce qu'il a déjà tenté. | `/clear` entre tâches, sous-agent pour ce qui est volumineux, `/compact <focus>`. |
+  | **Confusion** | Du contenu superflu (outils inutiles, consignes hors sujet) influence la réponse. | Désactiver les serveurs MCP inutiles (voir [`mcp.md`](mcp.md)), `CLAUDE.md` court, rules scopées par `paths:`. |
+  | **Clash** (conflit) | Deux parties du contexte se contredisent (consigne vs rule, tentative ancienne vs nouvelle info). | `/doctor prompt-audit` pour les consignes, nouvelle session à partir d'un `SPEC.md` pour un historique contradictoire. |
 
 ## Sortie
 
