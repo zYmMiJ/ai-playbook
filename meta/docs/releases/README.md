@@ -2,6 +2,7 @@
 
 | Version | Date | Résumé |
 |---|---|---|
+| [0.6.0](0.6.0.md) | 2026-11-26 | Création de la release GitHub ajoutée au skill `release`, sur permission explicite. |
 | [0.5.0](0.5.0.md) | 2026-11-26 | Notes de release avant le tag, tag sur permission explicite, défaillances de contexte, README simplifié. |
 | [0.4.0](0.4.0.md) | 2026-11-26 | Pratiques Claude Code de fin 2026 : vérification exécutable, gestion de session, permissions, parallélisation, agent de revue contre le plan ; permission demandée avant commit/push/merge. |
 | [0.3.0](0.3.0.md) | 2026-10-27 | Release notes par script déterministe (fin de Codex) ; pratiques remontées des projets : gouvernance des données, `AGENTS.md`, ADR, deux agents, prompt d'étude d'architecture. |
