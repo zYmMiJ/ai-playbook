@@ -29,11 +29,10 @@ Quatre étapes, dans cet ordre, **aucune ne doit être oubliée** :
    les contienne.
 1. **Fusionner `release/X.Y.Z` → `main`** — proposer la fusion (PR ou merge direct selon la
    convention du repo), ne jamais l'exécuter soi-même sans demande explicite pour ce tour.
-2. **Tag + push sur `main`** — voir le skill [`release`](../../release/SKILL.md), à partir de son
-   étape 2 directement (ses étapes 0 et 1 ne s'appliquent pas : notes déjà faites à l'étape 0
-   ci-dessus, et "déterminer le tag" inutile : `X.Y.Z` est déjà fixé
-   depuis le démarrage). Même règle : exécuté seulement après permission explicite de
-   l'utilisateur.
+2. **Tag + push sur `main`, puis release GitHub** — voir le skill
+   [`release`](../../release/SKILL.md), étapes 2 et 3 (ses étapes 0 et 1 ne s'appliquent pas :
+   notes déjà faites à l'étape 0 ci-dessus, `X.Y.Z` déjà fixé depuis le démarrage). Même règle :
+   exécuté seulement après permission explicite de l'utilisateur.
 3. **Fusionner `release/X.Y.Z` → `develop`** (retour) — à faire **même si l'utilisateur ne le
    redemande pas explicitement**, c'est cette étape qui est le plus souvent oubliée. La rappeler
    activement plutôt que d'attendre qu'on la demande.

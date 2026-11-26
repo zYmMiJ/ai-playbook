@@ -48,7 +48,7 @@ Rien ne s'installe : tout se copie puis s'adapte. Plusieurs fichiers contiennent
 | [`writing-good-commits`](skills/writing-good-commits/SKILL.md) | Rédige un message de commit à partir du diff, aligné sur la convention du repo. | custom |
 | [`writing-good-pull-requests`](skills/writing-good-pull-requests/SKILL.md) | Rédige et ouvre une PR/MR en brouillon depuis la branche courante. | adapté de [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework) |
 | [`user-stories`](skills/user-stories/SKILL.md) | Produit et affine des User Stories (cadrer → découper → rédiger → évaluer → estimer → ordonner → finaliser). | adapté de [`ai-driven-dev/framework`](https://github.com/ai-driven-dev/framework) |
-| [`release`](skills/release/SKILL.md) | Sort une release via tag Git (calcul du tag, garde-fous) ; tague et pousse seulement après permission explicite. | généralisé d'un projet Spring Boot |
+| [`release`](skills/release/SKILL.md) | Sort une release via tag Git (calcul du tag, garde-fous) puis la release GitHub ; tague, pousse et publie seulement après permission explicite. | généralisé d'un projet Spring Boot |
 | [`generate-release-note`](skills/generate-release-note/SKILL.md) | Génère les notes de release depuis le dernier tag, sur la branche de release, avant le tag. | généralisé d'un projet Spring Boot |
 | [`git-flow`](skills/git-flow/SKILL.md) | Crée et termine les branches feature/release/hotfix selon Git Flow (`main`/`develop`). | custom |
 

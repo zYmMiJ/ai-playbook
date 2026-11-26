@@ -1,7 +1,7 @@
 ---
 name: release
 description: >
-  Sort une release via tag Git (calcul du tag, garde-fous, tag + push) — affiche les commandes
+  Sort une release via tag Git (calcul du tag, garde-fous, tag + push, release GitHub) — affiche les commandes
   exactes et ne les exécute qu'après permission explicite de l'utilisateur. Se déclenche pour "sortir une release", "déployer en prod",
   "tagger une version", "quel est le prochain tag", "pourquoi <env> est en retard sur <env>",
   "relancer une release".
@@ -42,7 +42,7 @@ releasé plutôt qu'une différence de paramétrage.
 Merger la PR vers la branche par défaut suffit ; le pipeline CI fait le reste. Rien de ce skill ne
 s'applique à ce chemin.
 
-## Release — déterminer le tag, puis tag + push
+## Release — déterminer le tag, tag + push, release GitHub
 
 ### 0. Déterminer le tag
 
@@ -83,6 +83,21 @@ git push origin tag X.Y.Z            # déclenche le pipeline de release côté 
 Si le redéploiement ne suit pas automatiquement le push du tag côté CI (à vérifier par projet), le
 dire explicitement plutôt que de supposer que le push du tag suffit.
 
+### 3. Release GitHub (si le repo est sur GitHub)
+
+Le tag poussé ne crée pas de release GitHub. La créer sur le tag existant, avec les notes de
+l'étape 1 comme corps :
+
+```bash
+tail -n +3 <fichier-de-notes>.md > /tmp/notes-X.Y.Z.md   # corps sans le titre « # X.Y.Z — date »
+gh release create X.Y.Z --verify-tag --title "X.Y.Z" --notes-file /tmp/notes-X.Y.Z.md
+gh release list --limit 3                                 # X.Y.Z doit apparaître « Latest »
+```
+
+- `--verify-tag` : échoue si le tag n'est pas sur le remote, au lieu d'en créer un à la volée.
+- Release rattrapée pour une version plus ancienne que la dernière : ajouter `--latest=false`.
+- Visible en externe, comme le push : même règle de permission explicite (ci-dessous).
+
 ## Garde-fous avant de taguer
 
 - **Jamais un commit de bump de version seul** (souvent marqué `[no ci]` ou équivalent) — pas de
@@ -96,19 +111,20 @@ dire explicitement plutôt que de supposer que le push du tag suffit.
   préfixe `v` selon ce qui est déjà en usage sur ce repo — vérifier `git tag --list` plutôt que de
   supposer).
 
-## Tag et push : seulement après permission explicite
+## Tag, push et release GitHub : seulement après permission explicite
 
-Le tag et son push sont difficiles à annuler et visibles en externe (ils déploient en environnement
-de release). Avant de les lancer :
+Le tag, son push et la release GitHub sont difficiles à annuler et visibles en externe (ils
+déploient en environnement de release). Avant de les lancer :
 
-1. Afficher les commandes exactes (`git tag X.Y.Z <hash>`, `git push origin tag X.Y.Z`), avec le
-   commit visé et le résultat des garde-fous ci-dessus.
+1. Afficher les commandes exactes (`git tag X.Y.Z <hash>`, `git push origin tag X.Y.Z`,
+   `gh release create X.Y.Z ...`), avec le commit visé et le résultat des garde-fous ci-dessus.
 2. Attendre la permission explicite de l'utilisateur **pour ce tour** — une permission donnée pour
    une release précédente ne vaut pas pour celle-ci.
 3. Seulement ensuite, les exécuter. Ne jamais réécrire ni déplacer un tag déjà poussé.
 
 À garantir côté settings plutôt qu'à laisser au jugement : règle `ask` sur `Bash(git push *)` (et
-`Bash(git tag *)` si on veut aussi la demande sur le tag local) — voir
+`Bash(git tag *)` si on veut aussi la demande sur le tag local, `Bash(gh release create *)` pour la
+release GitHub) — voir
 [`../../rules/permissions.md`](../../rules/permissions.md). Un projet qui veut garder le tag
 entièrement manuel pose une règle `deny` à la place : Claude affiche alors les commandes à
 copier-coller.

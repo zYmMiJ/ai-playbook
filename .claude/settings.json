@@ -1,6 +1,11 @@
 {
   "permissions": {
-    "ask": ["Bash(git commit *)", "Bash(git push *)", "Bash(gh pr merge *)"]
+    "ask": [
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh release create *)"
+    ]
   },
   "hooks": {
     "PreToolUse": [
